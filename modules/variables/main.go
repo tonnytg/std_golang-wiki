@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -16,8 +17,25 @@ var student1 = Student {
 	32,
 }
 
+func MyName( x string ) (bool, error) {
+
+	if x == "Antonio" {
+		return true, nil
+	}
+	return false, errors.New("you inserted wrong value")
+}
+
 // main it is where the magic happens
 func main()  {
 	fmt.Printf("Hello friend %v! \n", student1.Name )
 	fmt.Printf("Friend you have %v years old! \n", student1.Age )
+
+	var name, err = MyName("Maria")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	fmt.Println(name)
 }
+
+
+
