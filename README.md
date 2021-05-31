@@ -1,2 +1,8 @@
 # std-golang-wiki
-Study my Wiki of GoLang
+Wiki GoLang
+
+- Variaveis e Constantes
+- Controles
+- Struct
+- Pacotes
+- Channels
