@@ -15,6 +15,11 @@ func doNoError() (string, error) {
 	return "200", nil
 }
 
+func doFmtError() error {
+	errCode:= 401
+	return fmt.Errorf("This is my error code: %d", errCode)
+}
+
 
 func main()  {
 	fmt.Println("Let's Go!")
@@ -30,4 +35,9 @@ func main()  {
 		log.Printf("This should not print")
 	}
 	log.Println("My response:", resp)
+
+	err = doFmtError()
+	if err != nil {
+		log.Printf("There was an error: %v\n", err)
+	}
 }
