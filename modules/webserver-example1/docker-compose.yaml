@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  appgo:
+    build: .
+    container_name: appgo
+    volumes:
+      - .:/go/src/
+    ports:
+      - 8585:8585
