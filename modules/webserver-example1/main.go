@@ -47,8 +47,3 @@ func main() {
 	webserver2 := webserver.NewWebserver()
 	webserver2.Serve()
 }
-
-
-
-
-
