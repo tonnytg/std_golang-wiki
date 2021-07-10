@@ -20,7 +20,6 @@ func doFmtError() error {
 	return fmt.Errorf("This is my error code: %d", errCode)
 }
 
-
 func main()  {
 	fmt.Println("Let's Go!")
 	resp, err := doError()
