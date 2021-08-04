@@ -14,7 +14,7 @@ func TestServeMyJson(t *testing.T) {
 
 	// if you need test browser
 	//time.Sleep(10 * time.Second)
-	url := "http://localhost:8080"
+	url := "http://localhost:8081"
 	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
