@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func Client() {
+func Client() (int, error) {
 
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -22,4 +22,5 @@ func Client() {
 	if res.StatusCode != 200 {
 		log.Fatal(errors.New("status code must be 200 and got"), res.StatusCode)
 	}
+	return res.StatusCode, nil
 }
