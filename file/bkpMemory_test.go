@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestBkpmemory(t *testing.T) {
+func TestBkpMemory(t *testing.T) {
 	file := "test_bkp.txt"
 	// in message set \n before close for best experience"
 	msg := "Hello\n"
