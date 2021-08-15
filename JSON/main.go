@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 )
 
 type Pessoa struct {
@@ -12,14 +13,18 @@ type Pessoa struct {
 }
 
 func main() {
-	fmt.Println("Let's Go!")
+
 	pessoa := Pessoa { "Antonio", 32, "Analista"}
-	encoder := json.Marshal(pessoa)
-	encoder.Encode(pessoa)
+	encoder, _ := json.Marshal(pessoa)
 
 	fmt.Printf("JSON to Slice of Bytes[]\n")
-	fmt.Println(json.Marshal(pessoa))
+	fmt.Println(encoder)
 
 	fmt.Printf("\nSlice of Bytes[] to JSON\n")
-	fmt.Println(json.Unmarshal(json.Marshal(pessoa)))
+	var decoder Pessoa
+	err := json.Unmarshal(encoder, &decoder)
+	if err != nil {
+		log.Println("error:", err)
+	}
+	fmt.Println("decode", decoder)
 }
