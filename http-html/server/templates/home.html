@@ -1,0 +1,23 @@
+<html>
+<head><meta http-equiv="Content-Type" content="test">
+    <title>teste</title>
+</head>
+
+<body>
+    <h1>Teste</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+        </tr>
+        {{range .}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Title}}</td>
+            <td>{{.Content}}</td>
+        </tr>
+        {{end}}
+    </table>
+</body>
+</html>
