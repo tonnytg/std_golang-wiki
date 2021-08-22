@@ -1,0 +1,3 @@
+module github.com/tonnytg/std-golang-wiki/Variadic...
+
+go 1.16
