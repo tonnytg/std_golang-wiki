@@ -1,3 +1,4 @@
+// Package list create a queue
 package list
 
 import (
@@ -5,6 +6,8 @@ import (
 	"fmt"
 )
 
+// MyList it is a function create a queue like a FIFO queue
+// ties func depends on container/list
 func MyList(itens ...string){
 	queue := list.New()
 
