@@ -7,11 +7,11 @@ import (
 )
 
 // MyList it is a function create a queue like a FIFO queue
-// ties func depends on container/list
-func MyList(itens ...string){
+// this func depends on container/list
+func MyList(items ...string){
 	queue := list.New()
 
-	for _, item := range itens {
+	for _, item := range items {
 		queue.PushBack(item)
 	}
 
