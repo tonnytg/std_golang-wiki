@@ -14,8 +14,8 @@ func hello(w http.ResponseWriter, req *http.Request) {
 	defer fmt.Println("server: hello handler ended")
 
 	select {
-	case <-time.After(10 * time.Second):
-		fmt.Fprintf(w, "hello\n")
+	case <-time.After(5 * time.Second):
+		fmt.Fprintf(w, "hello friend\n")
 	case <-ctx.Done():
 
 		err := ctx.Err()
@@ -23,6 +23,14 @@ func hello(w http.ResponseWriter, req *http.Request) {
 		internalError := http.StatusInternalServerError
 		http.Error(w, err.Error(), internalError)
 	}
+}
+
+func ContextWithKey(ctx context.Context, s string){
+	if v := ctx.Value(s); v != nil {
+		fmt.Println("found value:", v)
+		return
+	}
+	fmt.Println("key not found", s)
 }
 
 func ContextWithTime() {
@@ -43,6 +51,10 @@ func main() {
 
 	ContextWithTime()
 
+	ctx := context.WithValue(context.Background(), "language", "go")
+	ContextWithKey(ctx, "language")
+
+	fmt.Println("Access and wait: http://localhost:8090/hello")
 	http.HandleFunc("/hello", hello)
 	http.ListenAndServe(":8090", nil)
 }
