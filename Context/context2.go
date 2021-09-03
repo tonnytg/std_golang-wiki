@@ -1,4 +1,7 @@
 // https://www.sohamkamani.com/golang/context-cancellation-and-values/
+// melhor documentação sobre context
+// referencia https://www.youtube.com/watch?v=-_B5uQ4UGi0
+
 package main
 
 import (
