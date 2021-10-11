@@ -1,4 +1,4 @@
-package bkpmemory
+package savefile
 
 import (
 	"log"

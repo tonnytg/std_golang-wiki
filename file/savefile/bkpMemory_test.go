@@ -1,7 +1,7 @@
-package bkpmemory_test
+package savefile_test
 
 import (
-	bkpmemory "github.com/tonnytg/std-golang-wiki/file"
+	bkpmemory "github.com/tonnytg/std-golang-wiki/file/savefile"
 	"testing"
 )
 
