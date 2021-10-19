@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 )
 
 func Fibonacci(n int) int{
@@ -20,7 +19,7 @@ func Fibonacci(n int) int{
 
 func main() {
 	for i := 0; i <= 9; i++ {
-		fmt.Printf(strconv.Itoa(Fibonacci(i)) + " ")
+		fmt.Printf("%d " , Fibonacci(i))
 	}
 	fmt.Println()
 }
