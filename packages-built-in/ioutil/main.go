@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 func main() {
@@ -12,4 +13,8 @@ func main() {
 		log.Panic(err)
 	}
 	fmt.Printf("%s", r)
+	for i, v := range strings.Split(string(r), ":") {
+		fmt.Printf("%d: %s", i, v)
+	}
+
 }
