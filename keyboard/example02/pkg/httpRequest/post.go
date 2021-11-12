@@ -19,7 +19,7 @@ func PatchRequest(url, jsonStr string) ([]byte, error){
 
 	// JSON buffer
 	var jsonBuffer = []byte(jsonStr)
-	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonBuffer))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBuffer))
 
 	// Header with Authorization
 	bearer := "Bearer " + token

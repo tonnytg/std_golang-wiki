@@ -9,7 +9,7 @@ import (
 	"regexp"
 )
 
-func GetRequest(url string, body []byte) ([]byte, error) {
+func PostRequest(url string, message string) ([]byte, error) {
 
 	token := os.Getenv("OPENAI_API_KEY")
 	if token == "" {
@@ -19,7 +19,7 @@ func GetRequest(url string, body []byte) ([]byte, error) {
 
 	bearer := "Bearer " + token
 
-	req, err := http.NewRequest("GET", url, bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(message)))
 	req.Header.Set("Authorization", bearer)
 	req.Header.Add("Accept", "application/json")
 
