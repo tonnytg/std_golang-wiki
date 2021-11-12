@@ -1,27 +1,40 @@
-package httpRequest
+package httpSender
 
 import (
-	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 )
 
-func PostRequest(url string, message string) ([]byte, error) {
+func SendWithArgs(msg string) ([]byte, error) {
 
 	token := os.Getenv("OPENAI_API_KEY")
 	if token == "" {
-		fmt.Println("invalid token, you need export OPENAI_API_KEY")
+		fmt.Println("invalid token, you need export GCP_TOKEN")
 		os.Exit(1)
 	}
 
-	bearer := "Bearer " + token
+	url := "https://api.openai.com/v1/engines/davinci-instruct-beta/completions"
+	body := io.Reader(strings.NewReader(`{
+  "prompt": "How old are you?:\n\n1.",
+  "max_tokens": 64,
+  "temperature": 0.8,
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "top_p": 1.0,
+  "stop": ["\n\n"]
+}
+`))
+	req, err := http.NewRequest("POST", url, body)
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(message)))
+	// Header with Authorization
+	bearer := "Bearer " + token
 	req.Header.Set("Authorization", bearer)
-	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
 
 	client := &http.Client{}
 
