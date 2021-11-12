@@ -22,6 +22,7 @@ func CallFriend(message string) []byte {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Simple Shell")
+	fmt.Println("type Hi to start to talk")
 	fmt.Println("---------------------")
 
 	for {
