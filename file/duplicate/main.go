@@ -16,13 +16,16 @@ func main() {
 	files := make(map[int]string)
 
 	for i, filename := range os.Args[1:] {
-		fmt.Println(filename)
 		files[i] = filename
 	}
-	fmt.Println(files)
-	ReadLines(files[0])
+	for i, v := range files {
+		fmt.Printf("Position [%d]\t Book: %s\n", i, v)
+		ReadLines(files[i])
+    }
+
 }
 
+// ReadLines reads a whole file into memory
 func ReadLines(file string) {
 	f, err := os.Open(file)
     if err != nil {
