@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -19,4 +20,23 @@ func main() {
 		files[i] = filename
 	}
 	fmt.Println(files)
+	ReadLines(files[0])
+}
+
+func ReadLines(file string) {
+	f, err := os.Open(file)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer f.Close()
+
+    lines := make([]string, 0)
+    scanner := bufio.NewScanner(f)
+    for scanner.Scan() {
+        lines = append(lines, scanner.Text())
+    }
+    if err := scanner.Err(); err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(lines)
 }
