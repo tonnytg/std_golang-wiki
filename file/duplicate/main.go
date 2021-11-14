@@ -21,6 +21,7 @@ func main() {
 	for i, v := range files {
 		fmt.Printf("Position [%d]\t Book: %s\n", i, v)
 		ReadLines(files[i])
+		fmt.Println("---")
     }
 
 }
@@ -41,5 +42,8 @@ func ReadLines(file string) {
     if err := scanner.Err(); err != nil {
         log.Fatal(err)
     }
-    fmt.Println(lines)
+
+	for i, v := range lines {
+        fmt.Println(i, v)
+    }
 }
