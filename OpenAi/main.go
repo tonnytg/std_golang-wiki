@@ -23,9 +23,7 @@ func main() {
 
 	resp, err := client.Completion(ctx, gpt3.CompletionRequest{
 		Prompt:    []string{"" +
-					"You:O presidente do Brasil é ruim\n" +
-					"Friend:Não gosto dele, ele não cumpriu com o que prometeu\n" +
-					"You:O povo está morrendo, o que deveriamos fazer?\n" +
+					"You: Do you like play chess?\n" +
 					"Friend:"},
 
 		MaxTokens: gpt3.IntPtr(60),
