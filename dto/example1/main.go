@@ -49,7 +49,7 @@ func main() {
 	fmt.Println(p)
 
 	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/project", setProduct)
+	http.HandleFunc("/product", setProduct)
 	http.ListenAndServe(":8080", nil)
 
 
