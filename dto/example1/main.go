@@ -28,13 +28,17 @@ func jsonError(msg string) []byte {
 
 func setProduct(w http.ResponseWriter, r *http.Request) {
 
-	var productDto dto.Product
+	if r.Method == "POST" {
+		var productDto dto.Product
 
-	err := json.NewDecoder(r.Body).Decode(&productDto)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(jsonError(err.Error()))
-		return
+		err := json.NewDecoder(r.Body).Decode(&productDto)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(jsonError(err.Error()))
+			return
+		}
+		fmt.Fprintf(w, "productDto: %+v\n", productDto)
+		fmt.Printf("productDto: %+v\n", productDto)
 	}
 }
 
