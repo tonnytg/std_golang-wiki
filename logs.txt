@@ -1,1 +1,6 @@
 2021/09/15 19:21:19 Hello Friend
+INFO: 2021/09/15 19:32:32 main.go:27: Starting the application...
+INFO: 2021/09/15 19:32:32 main.go:28: Something noteworthy happened
+WARNING: 2021/09/15 19:32:32 main.go:29: There is something you should know about
+ERROR: 2021/09/15 19:32:32 main.go:30: Something went wrong
+2021/10/10 09:21:12 main.go:20: log inside file

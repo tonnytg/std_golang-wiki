@@ -1,14 +1,38 @@
 package httpSender
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
-	"strings"
 )
+
+type AnswerOpenAI struct {
+	Id      string `json:"id"`
+	Object  string `json:"object"`
+	Created int    `json:"created"`
+	Model   string `json:"model"`
+	Choices []struct {
+		Text         string      `json:"text"`
+		Index        int         `json:"index"`
+		Logprobs     interface{} `json:"logprobs"`
+		FinishReason string      `json:"finish_reason"`
+	} `json:"choices"`
+}
+
+type QuestionOpenAI struct {
+	Prompt           string   `json:"prompt"`
+	MaxTokens        int      `json:"max_tokens"`
+	Temperature      float64  `json:"temperature"`
+	FrequencyPenalty float64  `json:"frequency_penalty"`
+	PresencePenalty  float64  `json:"presence_penalty"`
+	TopP             float64  `json:"top_p"`
+	Stop             []string `json:"stop"`
+}
 
 func SendWithArgs(msg string) ([]byte, error) {
 
@@ -18,17 +42,31 @@ func SendWithArgs(msg string) ([]byte, error) {
 		os.Exit(1)
 	}
 
+	var question QuestionOpenAI
+	question.Prompt = fmt.Sprintf("%v:\n\n1.", msg)
+	question.MaxTokens = 64
+	question.Temperature = 0.8
+	question.FrequencyPenalty = 0.0
+	question.PresencePenalty = 0.0
+	question.TopP = 1.0
+	question.Stop = []string{"\n\n"}
+
 	url := "https://api.openai.com/v1/engines/davinci-instruct-beta/completions"
-	body := io.Reader(strings.NewReader(`{
-  "prompt": "How old are you?:\n\n1.",
-  "max_tokens": 64,
-  "temperature": 0.8,
-  "frequency_penalty": 0.0,
-  "presence_penalty": 0.0,
-  "top_p": 1.0,
-  "stop": ["\n\n"]
-}
-`))
+	//body := io.Reader(strings.NewReader(`{
+	//		  "prompt": "How old are you?:\n\n1.",
+	//		  "max_tokens": 64,
+	//		  "temperature": 0.8,
+	//		  "frequency_penalty": 0.0,
+	//		  "presence_penalty": 0.0,
+	//		  "top_p": 1.0,
+	//		  "stop": ["\n\n"]
+	//		}
+	//`))
+
+	b, err := json.Marshal(question)
+
+	body := io.Reader(bytes.NewReader(b))
+
 	req, err := http.NewRequest("POST", url, body)
 
 	// Header with Authorization
@@ -50,10 +88,19 @@ func SendWithArgs(msg string) ([]byte, error) {
 	}
 
 	r := regexp.MustCompile(`20([0-9])`)
-	if !r.Match([]byte(string(resp.StatusCode))) {
+	if r.Match([]byte(string(resp.StatusCode))) {
 		fmt.Println("statusCode:", resp.StatusCode)
 	}
 
+	var answer AnswerOpenAI
 	data, _ := ioutil.ReadAll(resp.Body)
+	err = json.Unmarshal(data, &answer)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, v := range answer.Choices {
+        fmt.Println("<-", v.Text)
+    }
+
 	return data, nil
 }

@@ -51,6 +51,4 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/product", setProduct)
 	http.ListenAndServe(":8080", nil)
-
-
 }

@@ -10,8 +10,8 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Simple Shell")
-	fmt.Println("type Hi to start to talk")
+	fmt.Println("FriendAI talk to OpenAI")
+	fmt.Println("type some question!!!")
 	fmt.Println("---------------------")
 
 	for {
@@ -20,7 +20,7 @@ func main() {
 		// convert CRLF to LF
 		text = strings.Replace(text, "\n", "", -1)
 
-		answer, _ := httpSender.SendWithArgs(text)
-		fmt.Println(string(answer))
+		httpSender.SendWithArgs(text)
+		//fmt.Println(string(answer))
 	}
 }

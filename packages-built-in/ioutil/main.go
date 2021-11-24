@@ -15,6 +15,10 @@ func main() {
 	fmt.Printf("%s", r)
 	count := 0
 	for _, v := range strings.Split(string(r), ":") {
+
+		if strings.Contains(v, "#") {
+			break
+		}
 		switch count {
 		case 0:
             fmt.Printf("User: %s ", v)
@@ -34,9 +38,6 @@ func main() {
 		case 5:
             fmt.Printf("Shell: %s ", v)
 			count = 0
-		//case 6:
-        //    fmt.Printf("\n")
-        //    count = 0
 		}
 	}
 	fmt.Println()

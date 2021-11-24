@@ -8,5 +8,5 @@ func Calc(a, b, c float64) float64 {
 }
 
 func main() {
-	fmt.Println("Result: ", Calc(2, 300, 5))
+	fmt.Println("Result: ", Calc(33, 100, 15))
 }

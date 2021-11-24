@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-
-	file, err := os.OpenFile("test.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0664)
+	file, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0664)
 	if err != nil {
 		fmt.Printf("Error opening")
 	}

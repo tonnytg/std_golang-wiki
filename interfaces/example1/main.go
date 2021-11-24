@@ -49,7 +49,7 @@ func main() {
 	LigaVeiculo(&c)
 }
 
-func LigaVeiculo(v ...Veiculo) {
+func LigaVeiculo(v ...interface{}) {
 	for i, j := range v {
 		fmt.Println(i, j)
 	}

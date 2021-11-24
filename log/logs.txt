@@ -1,1 +1,1 @@
-2021/09/15 19:22:13 Hello Friend
+2021/09/15 21:30:01 main.go:21: log inside file
