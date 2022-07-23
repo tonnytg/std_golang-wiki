@@ -10,7 +10,7 @@ typedef struct Message {
 char * gl_msg = "message_in_c_global";
 
 void receiver(message_t* msg) {
-    printf("%d \t %d \n", msg->m_type, msg->buff_size);
+    printf("Result: %d \t %d \n", msg->m_type, msg->buff_size);
 }
 
 message_t* getMessage() {
@@ -22,5 +22,5 @@ message_t* getMessage() {
 }
 
 void hello() {
-    printf("hello from C\n");
+    printf("Message: hello from C\n");
 }
