@@ -18,7 +18,7 @@ type Labels struct {
 	Value string `json:"Value"`
 }
 
-type CheckParameters struct {
+type ValidValues struct {
 	JobID      string       `json:"JobID"`
 	Parameters []Parameters `json:"Parameters"`
 	Labels     []Labels     `json:"Labels"`
@@ -26,14 +26,14 @@ type CheckParameters struct {
 
 type Fields struct {
 	ID         int          `json:"Id"`
+	Job        string       `json:"Job"`
 	Name       string       `json:"Name"`
 	Parameters []Parameters `json:"Parameters"`
 	Labels     []Labels     `json:"Labels"`
 }
 
-func GetParameters() error {
-	file := "./test.json"
-	o, _ := os.Open(file)
+func GetSkel() (ValidValues, error) {
+	o, _ := os.Open("./skel.json")
 	defer o.Close()
 
 	content, err := io.ReadAll(o)
@@ -41,30 +41,47 @@ func GetParameters() error {
 		panic(err)
 	}
 
-	p := CheckParameters{}
+	p := ValidValues{}
 	err = json.Unmarshal(content, &p)
 	if err != nil {
 		panic(err)
 	}
-	for i, v := range p.Parameters {
-		fmt.Println(i, v.Name, v.Value)
+
+	return p, nil
+}
+
+func GetValues() (Fields, error) {
+	o, _ := os.Open("./values.json")
+	defer o.Close()
+
+	content, err := io.ReadAll(o)
+	if err != nil {
+		panic(err)
 	}
 
-	return fmt.Errorf("Not implemented")
+	f := Fields{}
+	err = json.Unmarshal(content, &f)
+	if err != nil {
+		panic(err)
+	}
+
+	return f, nil
 }
 
 func main() {
 	fmt.Println("Test Dynamic fields read by outside JSON")
-	var f Fields
-	f.ID = 1
-	f.Name = "Test"
-	for i, v := range f.Parameters {
-		fmt.Println("Check", i, v)
-	}
-	fmt.Println(f)
 
-	err := GetParameters()
+	skel, err := GetSkel()
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
+
+	fmt.Println("Skeleton:", skel)
+
+	values, err := GetValues()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Values:", values)
 }
