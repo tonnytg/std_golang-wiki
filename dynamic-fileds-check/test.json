@@ -1,0 +1,13 @@
+{
+  "Job": "Teste de Job",
+  "Parameters": [
+    {
+      "Name": "Owner",
+      "Value": "Antonio"
+    },
+    {
+      "Name": "BudgetID",
+      "Value": "100"
+    }
+  ]
+}
