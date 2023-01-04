@@ -17,7 +17,7 @@ func PrettyString(str string) (string, error) {
 
 func main() {
 	url := "https://610aa52552d56400176afebe.mockapi.io/api/v1/friendlist"
-	timeOut := 20
+	timeOut := 3
 	headers := map[string]string{
 		"Content-Type": "application/json",
 	}
