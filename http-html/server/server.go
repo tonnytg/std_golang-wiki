@@ -1,18 +1,41 @@
 package server
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
-	"os"
-	"time"
 )
 
 type Info struct {
-	ID	int
-	Title string
+	ID      int
+	Title   string
 	Content string
+}
+
+var tmpl *template.Template
+
+func FormHandler(w http.ResponseWriter, r *http.Request) {
+
+	log.Println(r.Method)
+
+	if r.Method == "POST" {
+		// get user and password form query url
+		r.ParseForm()
+		user := r.FormValue("user")
+		pass := r.FormValue("password")
+
+		if user == "admin" && pass == "admin" {
+			log.Println("Login Success")
+		} else {
+			log.Println("Login Failed")
+		}
+	}
+	// use template for form.html
+	tmpl := template.Must(template.New("form.html").ParseFiles("./server/templates/form.html"))
+	if err := tmpl.Execute(w, nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	return
 }
 
 func PersonHandler(w http.ResponseWriter, req *http.Request) {
@@ -21,30 +44,18 @@ func PersonHandler(w http.ResponseWriter, req *http.Request) {
 		{2, "Vaga2", "Test2"},
 		{3, "Vaga3", "Test3"},
 	}
-	t, err := template.ParseFiles("./server/templates/home.html")
-	if err != nil {
-		log.Panic(err)
-	}
-	t.Execute(w, news)
-	fmt.Println(news[0].ID)
 
-	w.WriteHeader(http.StatusOK)
+	tmpl := template.Must(template.New("home.html").ParseFiles("./server/templates/home.html"))
+	if err := tmpl.Execute(w, news); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func WebServer() {
 
-	server := &http.Server{
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		Addr:         ":8080",
-		Handler:      http.DefaultServeMux,
-		ErrorLog:     log.New(os.Stderr, "server log:", log.Lshortfile),
-	}
-
 	http.HandleFunc("/", PersonHandler)
+	http.HandleFunc("/form", FormHandler)
 
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Println("listen error:", err)
-	}
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
