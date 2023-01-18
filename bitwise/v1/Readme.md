@@ -1,7 +1,7 @@
 
 ### Bit Wise
 
-This is a simple library for doing bit wise operations in C++.
+This is a simple library for doing bit wise operations
 It is a header only library and is very easy to use. It is also very fast.
 
 This code use `Encode` and `Decode` functions to transform Message to Bits and Bits to Message.
