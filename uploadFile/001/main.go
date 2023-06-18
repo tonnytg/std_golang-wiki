@@ -1,87 +1,84 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
-	"mime/multipart"
 	"net/http"
 	"os"
 )
 
-type FormData struct {
-	Name       string                `json:"name"`
-	Email      string                `json:"email"`
-	Phone      string                `json:"phone"`
-	CheckTerms bool                  `json:"checkTerms"`
-	CheckNews  bool                  `json:"checkNews"`
-	File       *multipart.FileHeader `json:"file"`
+func main() {
+	http.HandleFunc("/upload", handleFileUpload)
+	log.Fatal(http.ListenAndServe(":3005", nil))
 }
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
-	// Permitir solicitações de origem cruzada (CORS)
+func handleFileUpload(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	if r.Method == "OPTIONS" {
-		// Responder com sucesso para as solicitações OPTIONS (pré-voo)
-		return
-	}
-
-	// Verificar se a solicitação é um método POST
 	if r.Method != http.MethodPost {
-		http.Error(w, "Método não permitido.", http.StatusMethodNotAllowed)
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprintf(w, "Invalid request method")
 		return
 	}
 
-	// Ler o corpo da solicitação
-	body, err := ioutil.ReadAll(r.Body)
+	// Parse the multipart form
+	err := r.ParseMultipartForm(10 << 20) // Set the maximum file size (in this case, 10MB)
 	if err != nil {
-		http.Error(w, "Falha ao ler o corpo da solicitação.", http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Error parsing the form: %v", err)
 		return
 	}
 
-	// Converter o JSON para uma struct FormData
-	var formData FormData
-	err = json.Unmarshal(body, &formData)
-	if err != nil {
-		http.Error(w, "Falha ao converter o JSON para FormData.", http.StatusBadRequest)
-		return
-	}
+	log.Printf("Request Method: %+v\n", r.Method)
+	log.Printf("Request Headers: %+v\n", r.Header)
+	log.Printf("Request Body: %+v\n", r.Body)
+	log.Printf("Request GetBody: %+v\n", r.GetBody)
+	log.Printf("Request Form: %+v\n", r.Form)
+	log.Printf("Request PostForm: %+v\n", r.PostForm)
+	log.Printf("Request MultipartForm: %+v\n", r.MultipartForm)
+	log.Printf("Request RemoteAddr: %+v\n", r.RemoteAddr)
+	log.Printf("Request RequestURI: %+v\n", r.RequestURI)
+	log.Printf("Request URL: %+v\n", r.URL)
+	log.Printf("Request Port: %+v\n", r.URL.Port())
+	log.Printf("Request Scheme: %+v\n", r.URL.Scheme)
+	log.Printf("Address: %+v\n", r.URL.String())
+	log.Printf("Request Path: %+v\n", r.URL.Path)
+	log.Printf("Request Query: %+v\n", r.URL.Query())
+	log.Printf("Request Hostname: %+v\n", r.URL.Hostname())
+	log.Printf("Request Address: %+v\n", r.URL.Host)
+	log.Printf("RemoteAddr: %+v\n", r.RemoteAddr)
 
-	// Abrir o arquivo enviado
-	file, err := formData.File.Open()
+	// Get the file from the request
+	file, handler, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, "Falha ao abrir o arquivo enviado.", http.StatusInternalServerError)
+		log.Printf("Error retrieving the file from the request: %s\n", err)
+		log.Printf("Request: %+v\n", r)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Error retrieving the file: %v", err)
 		return
 	}
 	defer file.Close()
 
-	// Criar um arquivo no servidor para salvar o arquivo enviado
-	dst, err := os.Create(formData.File.Filename)
+	// Create a new file on the server to store the uploaded file
+	f, err := os.OpenFile(handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
-		http.Error(w, "Falha ao criar o arquivo no servidor.", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error creating the file: %v", err)
 		return
 	}
-	defer dst.Close()
+	defer f.Close()
 
-	// Copiar o conteúdo do arquivo enviado para o arquivo criado no servidor
-	_, err = io.Copy(dst, file)
+	// Copy the contents of the uploaded file to the newly created file on the server
+	_, err = io.Copy(f, file)
 	if err != nil {
-		http.Error(w, "Falha ao salvar o arquivo no servidor.", http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error copying file contents: %v", err)
 		return
 	}
 
-	fmt.Fprintf(w, "Arquivo recebido com sucesso!")
-}
-
-func main() {
-	// Rota para upload de arquivo
-	http.HandleFunc("/upload", uploadFile)
-
-	// Iniciar o servidor na porta 3005
-	log.Fatal(http.ListenAndServe(":3005", nil))
+	fmt.Fprintf(w, "File uploaded successfully!")
 }
