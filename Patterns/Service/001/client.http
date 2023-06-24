@@ -1,0 +1,9 @@
+GET http://localhost:8080/alunos?id=2
+
+###
+
+POST http://localhost:8080/alunos
+
+{
+    "nome": "João2"
+}
