@@ -32,7 +32,7 @@ func main() {
 	}
 
 	node2 := Node{
-		Pessoa:   pessoa,
+		Pessoa:   pessoa2,
 		Lastname: "Oliveira",
 		Next:     nil,
 	}
