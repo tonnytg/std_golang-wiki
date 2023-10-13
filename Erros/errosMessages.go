@@ -6,6 +6,11 @@ import (
 	"log"
 )
 
+func MsgErrorLog(msg string) error {
+	log.Println("Error: %s\n", msg)
+	return msg
+}
+
 // doError emit fake error code 404
 func doError() (string, error) {
 	return "", errors.New("404")
